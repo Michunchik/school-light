@@ -187,3 +187,16 @@ export function formatGroupReport(name: string, students: number, s: ReturnType<
     `  проведено занятий: ${s.conducted}, ДЗ выдано: ${s.withHomework}, сделано: ${s.homeworkDone}`,
   ].join('\n');
 }
+
+/** Строки ведомости: сумма считается по правилам, а не берётся из сохранённого поля. */
+export function payoutLines<T extends PayableLesson & { isPaid: boolean }>(
+  lessons: T[],
+  teacherRates: Rates,
+  schoolRates: Rates,
+): PayoutLine[] {
+  return lessons.map((l) => ({
+    status: l.status,
+    payoutAmount: calculateLessonPayout(l, teacherRates, schoolRates).amount,
+    isPaid: l.isPaid,
+  }));
+}
