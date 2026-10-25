@@ -1,14 +1,10 @@
+import { durationMinutes, isActive, overlaps } from './calc.ts';
 import type { Group } from './group.ts';
 import type { Student } from './student.ts';
 import type { Teacher } from './teacher.ts';
 
 export type LessonStatus = 'planned' | 'conducted' | 'trial_conducted' | 'cancelled' | 'rescheduled';
 export type Format = 'individual' | 'group' | 'intensive' | 'curatorship' | 'trial';
-
-const toMinutes = (hhmm: string): number => {
-  const [h, m] = hhmm.split(':').map(Number);
-  return h * 60 + m;
-};
 
 /** Занятие: один преподаватель и либо один ученик, либо группа. */
 export class Lesson {
@@ -60,14 +56,14 @@ export class Lesson {
   }
 
   durationMinutes(): number {
-    return Math.max(15, toMinutes(this.endTime) - toMinutes(this.startTime));
+    return durationMinutes(this.startTime, this.endTime);
   }
 
   isActive(): boolean {
-    return this.status !== 'cancelled' && this.status !== 'rescheduled';
+    return isActive(this.status);
   }
 
   overlaps(other: Lesson): boolean {
-    return this.date === other.date && this.startTime < other.endTime && other.startTime < this.endTime;
+    return overlaps(this, other);
   }
 }

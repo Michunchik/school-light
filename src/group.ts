@@ -1,3 +1,4 @@
+import { formatGroupReport, groupStats } from './calc.ts';
 import type { Lesson } from './lesson.ts';
 import type { Student } from './student.ts';
 
@@ -17,19 +18,8 @@ export class Group {
     this.students.push(student);
   }
 
-  /** Печатает сводку по группе: сколько занятий проведено и сколько ДЗ сделано. */
+  /** Печатает сводку по группе; текст собирает чистая функция. */
   printReport(): void {
-    let conducted = 0;
-    let withHomework = 0;
-    let homeworkDone = 0;
-    for (const l of this.lessons) {
-      if (l.status === 'conducted') conducted += 1;
-      if (l.homeworkText !== '' && l.isActive()) {
-        withHomework += 1;
-        if (l.homeworkDone) homeworkDone += 1;
-      }
-    }
-    console.log(`Группа «${this.name}»: учеников ${this.students.length}`);
-    console.log(`  проведено занятий: ${conducted}, ДЗ выдано: ${withHomework}, сделано: ${homeworkDone}`);
+    console.log(formatGroupReport(this.name, this.students.length, groupStats(this.lessons)));
   }
 }
