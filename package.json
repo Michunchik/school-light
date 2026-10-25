@@ -1,0 +1,15 @@
+{
+  "name": "school-light",
+  "version": "1.0.0",
+  "description": "Учебная консольная версия школьной логики: расписание, ДЗ, зарплата преподавателей",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.ts",
+    "check": "tsc -p .",
+    "test": "node --test \"test/**/*.test.ts\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  }
+}
